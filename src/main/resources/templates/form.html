@@ -5,7 +5,7 @@
     <title>Update user</title>
 </head>
 <body>
-    <a th:href="@{/}">Back to user list</a>
+    <a th:href="@{/user}">Back to user list</a>
     <div>
         <form th:action="@{/user/save}" th:object="${user}" method="post">
                 <input type="hidden" th:field="*{id}"/>

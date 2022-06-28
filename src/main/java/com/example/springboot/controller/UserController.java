@@ -22,7 +22,7 @@ public class UserController {
 
     @GetMapping("/user/search")
     public String getListUser(@RequestParam String name, Model model) {
-        model.addAttribute("users", userRepository.findAllByNameContaining(name));
+        model.addAttribute("users", userRepository.findAllByUserNameContaining(name));
         return "user-index";
     }
 
@@ -36,7 +36,7 @@ public class UserController {
     @GetMapping("/user/update/{id}")
     public String updateUser(@PathVariable int id,
                              Model model) {
-        User user = userRepository.findUserById(id);
+        User user = userRepository.findById(id);
             model.addAttribute("user", user);
         return "form";
     }
