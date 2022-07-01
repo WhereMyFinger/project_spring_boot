@@ -1,12 +1,14 @@
 package com.example.springboot.controller;
 
-import com.example.springboot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import javax.validation.Valid;
 
 import com.example.springboot.entities.User;
+import com.example.springboot.service.UserService;
 
 @Controller
 
@@ -35,10 +37,11 @@ public class UserController {
     }
 
     @PostMapping("/user/add_user")
-    public String addNewUser(User user) {
-        //User user = new User();
+    public String addNewUser(@Valid User user, BindingResult result) {
+        if(result.hasErrors()) {
+            return "add-new-form";
+        }
         userService.saveUser(user);
-        //model.addAttribute("user", user);
         return "redirect:/user";
     }
 
@@ -49,22 +52,13 @@ public class UserController {
     }
 
     @PutMapping("/user/update")
-    public String updateUser(User user) {
+    public String updateUser(@Valid User user, BindingResult result) {
+        if(result.hasErrors()) {
+            return "update-form";
+        }
         userService.saveUser(user);
         return "redirect:/user";
     }
-
-   /* @PostMapping("/user/save")
-    public String save(User user) {
-        userRepository.save(user);
-        return "redirect:/user";
-    }*/
-
-    /*@GetMapping("/user/delete")
-    public String showDeleteAlert(@RequestParam int id, Model model) {
-        model.addAttribute("user", userService.getUserById(id));
-        return "delete-alert";
-    }*/
 
     @DeleteMapping("/user/delete")
     public String deleteUser(@RequestParam int id) {

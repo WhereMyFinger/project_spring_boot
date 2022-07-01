@@ -11,14 +11,17 @@
         <div>
             <label class="username">Username</label>
             <input type="text" th:field="*{userName}" placeholder="Username" />
+            <td th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">Name can not be less than 4 letters</td>
         </div>
         <div>
             <label class="email">Email</label>
             <input type="text" th:field="*{email}" placeholder="Email" />
+            <td th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Invalid email</td>
         </div>
         <div>
              <label class="birthday">BirthDay</label>
             <input type="text" th:field="*{birthDay}" placeholder="Birthday" />
+            <td th:if="${#fields.hasErrors('birthDay')}" th:errors="*{birthDay}">incorrect format of date</td>
         </div>
         <button type="submit">Save</button>
     </form>
