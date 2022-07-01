@@ -14,5 +14,5 @@ public interface UserRepository extends CrudRepository<User, Integer> {
     List<User> findAllByUserNameContaining(@Param("userName") String userName);
 
     //@Query("select u from User u where u.id = :id")
-    User findById(@Param("id") int id);
+    //User findById(@Param("id") int id);
 }

@@ -12,8 +12,7 @@
         <input type="text" name="name" placeholder="search"/>
         <button type="submit">Search</button>
     </form>
-    <a th:href="@{/user/add_user}">Add user</a>
-
+    <a class="add-new-form button" th:href="@{/user/add_form}">Add New User</a>
     <table id="users">
         <thead>
             <tr>
@@ -31,13 +30,14 @@
                 <td><p th:text="${user.userName}"></p></td>
                 <td><p th:text="${user.email}"></p></td>
                 <td><p th:text="${user.birthDay}"></p></td>
-                <td><a th:href="@{'/user/update/' + ${user.id}}">update</a></td>
-                <td><a th:href="@{'/user/delete/' + ${user.id}}" class="delete" data-confirm="Are you sure to delete this item?">delete</a></td>
+                <td><a th:href="@{/user/update(id=${user.id})}">update</a></td>
+                <td>
+                    <form th:action="@{/user/delete(id=${user.id})}" th:method="delete" onSubmit="if(!confirm('Are you sure to delete this user?')){return false;}">
+                        <input type="submit" value="delete" />
+                    </form>
+                </td>
             </tr>
         </th:block>
     </table>
-
-<script th:src="@{/js/main-page.js}"></script>
-
 </body>
 </html>

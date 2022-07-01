@@ -1,55 +1,74 @@
 package com.example.springboot.controller;
 
+import com.example.springboot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.springboot.entities.User;
-import com.example.springboot.repository.UserRepository;
 
 @Controller
+
+
 public class UserController {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @GetMapping("/user")
     public String getAllUsers(Model model) {
-        model.addAttribute("users", userRepository.findAll());
+        model.addAttribute("users", userService.getAllUser());
         return "user-index";
     }
 
     @GetMapping("/user/search")
     public String getListUser(@RequestParam String name, Model model) {
-        model.addAttribute("users", userRepository.findAllByUserNameContaining(name));
+        model.addAttribute("users", userService.getListUser(name));
         return "user-index";
     }
 
-    @GetMapping("/user/add_user")
-    public String addNewUser(Model model) {
-        User user = new User();
+    @GetMapping("/user/add_form")
+    public String showAddNewForm(Model model, User user) {
         model.addAttribute("user", user);
-        return "form";
+        return "add-new-form";
     }
 
-    @GetMapping("/user/update/{id}")
-    public String updateUser(@PathVariable int id,
-                             Model model) {
-        User user = userRepository.findById(id);
-            model.addAttribute("user", user);
-        return "form";
-    }
-
-    @PostMapping("/user/save")
-    public String save(User user) {
-        userRepository.save(user);
+    @PostMapping("/user/add_user")
+    public String addNewUser(User user) {
+        //User user = new User();
+        userService.saveUser(user);
+        //model.addAttribute("user", user);
         return "redirect:/user";
     }
 
-    @GetMapping("/user/delete/{id}")
-    public String deleteUser(@PathVariable int id) {
-        userRepository.deleteById(id);
+    @GetMapping("/user/update")
+    public String showUpdateform(@RequestParam int id, Model model) {
+        model.addAttribute("user", userService.getUserById(id));
+        return "update-form";
+    }
+
+    @PutMapping("/user/update")
+    public String updateUser(User user) {
+        userService.saveUser(user);
+        return "redirect:/user";
+    }
+
+   /* @PostMapping("/user/save")
+    public String save(User user) {
+        userRepository.save(user);
+        return "redirect:/user";
+    }*/
+
+    /*@GetMapping("/user/delete")
+    public String showDeleteAlert(@RequestParam int id, Model model) {
+        model.addAttribute("user", userService.getUserById(id));
+        return "delete-alert";
+    }*/
+
+    @DeleteMapping("/user/delete")
+    public String deleteUser(@RequestParam int id) {
+        userService.deleteUser(id);
         return "redirect:/user";
     }
 }

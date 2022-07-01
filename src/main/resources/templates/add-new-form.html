@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Update user</title>
+</head>
+<body>
+        <a th:href="@{/user}">Back to user list</a>
+        <form th:action="@{/user/add_user}" th:object="${user}" method="post">
+            <input type="hidden" th:field="*{id}" />
+            <div>
+                <label class="username">Username</label>
+                <input type="text" th:field="*{userName}" placeholder="Username" />
+            </div>
+            <div>
+                <label class="email">Email</label>
+                <input type="text" th:field="*{email}" placeholder="Email" />
+            </div>
+            <div>
+                <label class="birthday">BirthDay</label>
+                <input type="text" th:field="*{birthDay}" placeholder="Birthday" />
+            </div>
+            <button type="submit">Save</button>
+        </form>
+</body>
+</html>
