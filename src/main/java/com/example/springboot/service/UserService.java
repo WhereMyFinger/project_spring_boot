@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.springboot.entities.User;
@@ -14,12 +16,12 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public Iterable<User> getAllUser() {
-        return userRepository.findAll();
+    public Page<User> getAllUser(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 
-    public List<User> getListUser(String name) {
-        return userRepository.findAllByUserNameContaining(name);
+    public Page<User> getListUser(Pageable pageable, String name) {
+        return userRepository.findAllByUserNameContaining(pageable, name);
     }
 
     public User getUserById(int id) {
@@ -40,5 +42,9 @@ public class UserService {
 
     public void deleteUser(int id) {
         userRepository.deleteById(id);
+    }
+
+    public void deleteAllUser() {
+        userRepository.deleteAll();
     }
 }
