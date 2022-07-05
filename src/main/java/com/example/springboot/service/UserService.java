@@ -31,7 +31,6 @@ public class UserService {
     public void saveUser(User user) {
         userRepository.save(user);
     }
-
     /*public void updateUser(int id, User user) {
         User userFromDB = userRepository.findById(id).get();
         userFromDB.setUserName(user.getUserName());
@@ -42,9 +41,5 @@ public class UserService {
 
     public void deleteUser(int id) {
         userRepository.deleteById(id);
-    }
-
-    public void deleteAllUser() {
-        userRepository.deleteAll();
     }
 }

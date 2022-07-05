@@ -2,6 +2,7 @@ package com.example.springboot.entities;
 
 import com.example.springboot.custom.Date;
 import com.example.springboot.custom.Email;
+import com.opencsv.bean.CsvBindByName;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,13 +15,17 @@ import javax.validation.constraints.Size;
 public class User {
 
     @Id
+    @CsvBindByName
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @Size(min = 5, message = "Name can not have less than 4 letters")
+    @CsvBindByName(column = "user_name")
+    @Size(min = 4, message = "Name can not have less than 4 letters")
     private String userName;
+    @CsvBindByName
     @NotEmpty(message = "Empty email")
     @Email
     private String email;
+    @CsvBindByName(column = "birth_day")
     @NotEmpty(message = "Empty date")
     @Date
     private String birthDay;
