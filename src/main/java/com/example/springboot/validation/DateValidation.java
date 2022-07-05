@@ -14,7 +14,7 @@ public class DateValidation implements ConstraintValidator<Date, String> {
                 .matches();
     }
 
-    String regexPattern = "^\\d{2}[-|/]\\d{2}[-|/]\\d{4}$";
+    String regexPattern = "^\\d{1,2}[-|/]\\d{1,2}[-|/]\\d{4}$";
 
     @Override
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
