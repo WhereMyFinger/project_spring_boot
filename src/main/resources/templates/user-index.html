@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Home page</title>
+</head>
+<body>
+    <h1>User list</h1>
+    <form th:action ="@{/user/search}">
+        <input type="text" name="name" placeholder="search"/>
+        <button type="submit">Search</button>
+    </form>
+    <a th:href="@{/upload_form}">Upload</a>
+    <a class="add-new-form button" th:href="@{/user/add_form}">Add New User</a>
+    <table id="users">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>User name</th>
+                <th>email</th>
+                <th>Birthday</th>
+                <th>Update</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <th:block th:each="user : ${users}">
+            <tr>
+                <td><p th:text="${user.id}"></p></td>
+                <td><p th:text="${user.userName}"></p></td>
+                <td><p th:text="${user.email}"></p></td>
+                <td><p th:text="${user.birthDay}"></p></td>
+                <td><a th:href="@{/user/update(id=${user.id})}">update</a></td>
+                <td>
+                    <form th:action="@{/user/delete(id=${user.id})}" th:method="delete" onSubmit="if(!confirm('Are you sure to delete this user?')){return false;}">
+                        <input type="submit" value="delete" />
+                    </form>
+                </td>
+            </tr>
+        </th:block>
+    </table>
+</body>
+</html>
