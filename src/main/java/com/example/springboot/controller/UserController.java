@@ -1,30 +1,60 @@
 package com.example.springboot.controller;
 
-import com.example.springboot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
+import javax.validation.Valid;
+
 import com.example.springboot.entities.User;
+import com.example.springboot.service.UserService;
 
 @Controller
-
-
 public class UserController {
 
     @Autowired
     private UserService userService;
 
     @GetMapping("/user")
-    public String getAllUsers(Model model) {
-        model.addAttribute("users", userService.getAllUser());
+    public String getAllUsers(Model model,
+                              @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
+                              @RequestParam(name = "size", required = false, defaultValue = "5") Integer size,
+                              @RequestParam(name = "sort", required = false, defaultValue = "ASC") String sort) {
+        Sort sortable = null;
+        if(sort.equals("ASC")) {
+            sortable = Sort.by("id").ascending();
+        }
+        if(sort.equals("DESC")) {
+            sortable = Sort.by("id").descending();
+        }
+        Pageable pageable = PageRequest.of(page, size, sortable);
+
+        model.addAttribute("users", userService.getAllUser(pageable));
         return "user-index";
     }
 
     @GetMapping("/user/search")
-    public String getListUser(@RequestParam String name, Model model) {
-        model.addAttribute("users", userService.getListUser(name));
+    public String getListUser(Model model,
+                              @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
+                              @RequestParam(name = "size", required = false, defaultValue = "5") Integer size,
+                              @RequestParam(name = "sort", required = false, defaultValue = "ASC") String sort,
+                              @RequestParam String name) {
+        Sort sortable = null;
+        if(sort.equals("ASC")) {
+            sortable = Sort.by("id").ascending();
+        }
+        if(sort.equals("DESC")) {
+            sortable = Sort.by("id").descending();
+        }
+        Pageable pageable = PageRequest.of(page, size, sortable);
+
+        model.addAttribute("users", userService.getListUser(pageable, name));
         return "user-index";
     }
 
@@ -35,10 +65,11 @@ public class UserController {
     }
 
     @PostMapping("/user/add_user")
-    public String addNewUser(User user) {
-        //User user = new User();
+    public String addNewUser(@Valid User user, BindingResult result) {
+        if(result.hasErrors()) {
+            return "add-new-form";
+        }
         userService.saveUser(user);
-        //model.addAttribute("user", user);
         return "redirect:/user";
     }
 
@@ -49,22 +80,13 @@ public class UserController {
     }
 
     @PutMapping("/user/update")
-    public String updateUser(User user) {
+    public String updateUser(@Valid User user, BindingResult result) {
+        if(result.hasErrors()) {
+            return "update-form";
+        }
         userService.saveUser(user);
         return "redirect:/user";
     }
-
-   /* @PostMapping("/user/save")
-    public String save(User user) {
-        userRepository.save(user);
-        return "redirect:/user";
-    }*/
-
-    /*@GetMapping("/user/delete")
-    public String showDeleteAlert(@RequestParam int id, Model model) {
-        model.addAttribute("user", userService.getUserById(id));
-        return "delete-alert";
-    }*/
 
     @DeleteMapping("/user/delete")
     public String deleteUser(@RequestParam int id) {
